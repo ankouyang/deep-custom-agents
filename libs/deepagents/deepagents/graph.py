@@ -81,23 +81,29 @@ def get_default_model() -> ChatAnthropic:
 
 
 def create_deep_agent(  # noqa: C901, PLR0912  # Complex graph assembly logic with many conditional branches
-    model: str | BaseChatModel | None = None,
-    tools: Sequence[BaseTool | Callable | dict[str, Any]] | None = None,
+    # 大脑和动作
+    model: str | BaseChatModel | None = None,# 哪个模型思考
+    tools: Sequence[BaseTool | Callable | dict[str, Any]] | None = None,# 决定agent能做什么动作
     *,
-    system_prompt: str | SystemMessage | None = None,
-    middleware: Sequence[AgentMiddleware] = (),
-    subagents: Sequence[SubAgent | CompiledSubAgent | AsyncSubAgent] | None = None,
-    skills: list[str] | None = None,
-    memory: list[str] | None = None,
-    response_format: ResponseFormat | None = None,
-    context_schema: type[Any] | None = None,
-    checkpointer: Checkpointer | None = None,
-    store: BaseStore | None = None,
-    backend: BackendProtocol | BackendFactory | None = None,
-    interrupt_on: dict[str, bool | InterruptOnConfig] | None = None,
+    # 行为和扩展机制
+    system_prompt: str | SystemMessage | None = None, #不是简单补一句身份设定，而是给整个 agent 注入行为规则。
+    middleware: Sequence[AgentMiddleware] = (),# 横切能力，不是具体业务功能，而是能力扩展机制
+    # 深度agent特有能力
+    subagents: Sequence[SubAgent | CompiledSubAgent | AsyncSubAgent] | None = None,#让主 agent 可以拆任务给子 agent。
+    skills: list[str] | None = None,#让 agent 可以按需加载工作流能力
+    memory: list[str] | None = None,#让 agent 在启动时就带上长期上下文
+    # 运行时基础设施
+    checkpointer: Checkpointer | None = None,#负责状态持久化
+    store: BaseStore | None = None,#负责底层存储
+    backend: BackendProtocol | BackendFactory | None = None,#负责文件系统和执行环境之类的基础设施
+    cache: BaseCache | None = None, #负责缓存
+    # 控制和治理
+    interrupt_on: dict[str, bool | InterruptOnConfig] | None = None,#允许在某些工具调用前暂停，做人审或人工干预
     debug: bool = False,
-    name: str | None = None,
-    cache: BaseCache | None = None,
+    name: str | None = None,#运行管理信息
+    response_format: ResponseFormat | None = None,#决定最终输出是否结构化
+    context_schema: type[Any] | None = None,#决定 agent 的上下文结构
+
 ) -> CompiledStateGraph:
     """Create a deep agent.
 

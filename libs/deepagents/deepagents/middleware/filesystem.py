@@ -476,6 +476,7 @@ class FilesystemMiddleware(AgentMiddleware[FilesystemState, ContextT, ResponseT]
         self._tool_token_limit_before_evict = tool_token_limit_before_evict
         self._max_execute_timeout = max_execute_timeout
 
+        #也就是说，这 7 个工具就是在这里统一注册进 middleware 的。
         self.tools = [
             self._create_ls_tool(),
             self._create_read_file_tool(),
