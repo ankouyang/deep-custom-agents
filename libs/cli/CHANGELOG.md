@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.35](https://github.com/ankouyang/deep-custom-agents/compare/deepagents-cli==0.0.34...deepagents-cli==0.0.35) (2026-03-24)
+
+
+### Features
+
+* 初始化项目 ([cd09237](https://github.com/ankouyang/deep-custom-agents/commit/cd0923767ad13dce7ce99bbcef3cc8e08d0b3b6a))
+
 ## [0.0.34](https://github.com/langchain-ai/deepagents/compare/deepagents-cli==0.0.33...deepagents-cli==0.0.34) (2026-03-17)
 
 ### Features
